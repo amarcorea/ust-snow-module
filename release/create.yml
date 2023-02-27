@@ -1,0 +1,105 @@
+- hosts: localhost
+  gather_facts: False
+  vars_files:
+    - "{{ VARS_PATH }}"
+    - variables/common.yml
+  vars:
+    
+    #Para creación
+    release_parent: PDCT0050074
+    release_group: SGT_AP_SE_ONEFCC
+    release_requested_group: SGT_AP_SE_ONEFCC
+    release_reason: New Version/Evolutive
+    release_risk: Low
+    release_short_description: Despliegue de TF
+    release_description: |
+      Descripción de la release, despliegue de nuevo componente
+    release_justification: Justificación del despliegue del nuevo componente
+    release_implementation_plan: Plan de implementación para el despliegue del nuevo componente
+    release_preproduction_proposed_date: "2023-03-10 08:00:00"
+    release_start_date: "2023-03-15 08:00:00"
+    release_end_date: "2023-03-17 08:00:00"
+    release_backout_plan: "N/A"
+    release_risk_and_impact: Riesgo e impacto
+    release_test_plan: Plan de pruebas
+    work_notes: Actividad realizada de forma automática
+
+    ##Vars for tasks
+    #task_start_date: "2023-02-18 12:00:00"
+    #task_end_date: "2023-02-18 13:00:00"
+    #task_short_description: Despliegue de PGN
+    #task_description: Despliegue de PGN, esto es una prueba de demostración
+    #task_type: Other Deployment
+    #task_group: SGT_IN_SY_ES_DEVSECOPS
+    #task_application: OneFCC 
+    #task_technology: Oracle OFSAA
+    #task_version: CS_AM-binary-3.77.0.zip
+    #task_close_code: Successful automatic
+    #task_close_notes: Completado desde ansible
+
+
+  tasks:
+  
+    #- name: Get release
+    #  block:
+    #    - name: Get Release
+    #      onefcc_snow_release:
+    #        state: info
+    #        sn_user: "{{ snow_specs.pre.user }}"
+    #        sn_pass: "{{ snow_specs.pre.pass }}"
+    #        sn_base: https://santandertest.service-now.com
+    #        release: "{{ release }}"
+    #      register: output_get_release
+    #    - name: Printing release
+    #      debug:
+    #        var=output_get_release
+    #  tags: 
+    #    - info
+
+    
+    - name: Create Release
+      onefcc_snow_release:
+        state: present
+        sn_user: "{{ snow_specs.pre.user }}"
+        sn_pass: "{{ snow_specs.pre.pass }}"
+        parent: "{{ release_parent }}"
+        group: "{{ release_group }}"
+        requested_group: "{{ release_requested_group }}"
+        reason: "{{ release_reason }}"
+        risk: "{{ release_risk }}"
+        short_description: "{{ release_short_description }}"
+        description: "{{ release_description }}"
+        justification: "{{ release_justification }}"
+        implementation_plan: "{{ release_implementation_plan }}"
+        preproduction_proposed_date: "{{ release_preproduction_proposed_date }}"
+        start_date: "{{ release_start_date }}"
+        end_date: "{{ release_end_date }}"
+        backout_plan: "{{ release_backout_plan }}"
+        risk_and_impact: "{{ release_risk_and_impact }}"
+        test_plan: "{{ release_test_plan }}"
+      register: output_create_release
+      when: option == create
+
+    
+    - name: Update Release
+      onefcc_snow_release:
+        state: present
+        sn_user: "{{ snow_specs.pre.user }}"
+        sn_pass: "{{ snow_specs.pre.pass }}"
+        parent: "{{ release_parent }}"
+        group: "{{ release_group }}"
+        requested_group: "{{ release_requested_group }}"
+        reason: "{{ release_reason }}"
+        risk: "{{ release_risk }}"
+        short_description: "{{ release_short_description }}"
+        description: "{{ release_description }}"
+        justification: "{{ release_justification }}"
+        implementation_plan: "{{ release_implementation_plan }}"
+        preproduction_proposed_date: "{{ release_preproduction_proposed_date }}"
+        start_date: "{{ release_start_date }}"
+        end_date: "{{ release_end_date }}"
+        backout_plan: "{{ release_backout_plan }}"
+        risk_and_impact: "{{ release_risk_and_impact }}"
+        test_plan: "{{ release_test_plan }}"
+      register: output_create_release
+      when: option == update
